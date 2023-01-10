@@ -1,46 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import * as action from "./store/actionTypes";
+import { createStore } from "./store/createStore";
+import { taskReducer } from "./store/taskReducer";
 
-function taskReducer(state, action) {
-  switch (action.type) {
-    case "task/completed":
-      const newArray = [...state];
-      const elementIndex = newArray.findIndex(
-        (element) => element.id === action.payload.id
-      );
-      newArray[elementIndex].completed = !newArray[elementIndex].completed;
-      return newArray;
+const initialState = [
+  { id: 1, title: "Task 1", completed: false },
+  { id: 2, title: "Task 2", completed: false },
+];
 
-    default:
-      break;
-  }
-}
-
-function createStore(reducer, initialState) {
-  let state = initialState;
-  let listeners = [];
-  function getState() {
-    return state;
-  }
-  function dispatch(action) {
-    state = reducer(state, action);
-    for (let i = 0; i < listeners.length; i++) {
-      const listener = listeners[i];
-      listener();
-    }
-  }
-
-  function subscribe(listener) {
-    listeners.push(listener);
-  }
-  return { getState, dispatch, subscribe };
-}
-
-const store = createStore(taskReducer, [
-  { id: 1, description: "Task 1", completed: false },
-  { id: 2, description: "Task 2", completed: false },
-]);
+const store = createStore(taskReducer, initialState);
 
 function App() {
   console.log(store.getState());
@@ -53,17 +23,31 @@ function App() {
   }, []);
 
   const completeTask = (idTask) => {
-    store.dispatch({ type: "task/completed", payload: { id: idTask } });
+    store.dispatch({
+      type: action.taskUpdated,
+      payload: { id: idTask, completed: true },
+    });
+  };
+
+  const changeTitle = (idTask) => {
+    store.dispatch({
+      type: action.taskUpdated,
+      payload: {
+        id: idTask,
+        title: `New title ${idTask}`,
+      },
+    });
   };
   return (
     <>
       <h1 className="App">App</h1>
       <ul>
-        {state.map(({ id, description, completed }) => (
+        {state.map(({ id, title, completed }) => (
           <li key={id}>
-            <p>{description}</p>
+            <p>{title}</p>
             <p> {`Status: ${completed} `}</p>
             <button onClick={() => completeTask(id)}>Complete</button>
+            <button onClick={() => changeTitle(id)}>Title</button>
             <hr />
           </li>
         ))}
