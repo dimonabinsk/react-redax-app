@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import * as action from "./store/actionTypes";
-import { createStore } from "./store/createStore";
-import { taskReducer } from "./store/taskReducer";
+import * as action from "./store/actions";
+// import { createStore } from "./store/createStore";
+import { initialStore } from "./store/store";
+// import { taskReducer } from "./store/taskReducer";
 
-const initialState = [
-  { id: 1, title: "Task 1", completed: false },
-  { id: 2, title: "Task 2", completed: false },
-];
+// const initialState = [
+//   { id: 1, title: "Task 1", completed: false },
+//   { id: 2, title: "Task 2", completed: false },
+// ];
 
-const store = createStore(taskReducer, initialState);
+const store = initialStore();
 
 function App() {
   console.log(store.getState());
@@ -23,20 +24,11 @@ function App() {
   }, []);
 
   const completeTask = (idTask) => {
-    store.dispatch({
-      type: action.taskUpdated,
-      payload: { id: idTask, completed: true },
-    });
+    store.dispatch(action.taskCompeted(idTask));
   };
 
   const changeTitle = (idTask) => {
-    store.dispatch({
-      type: action.taskUpdated,
-      payload: {
-        id: idTask,
-        title: `New title ${idTask}`,
-      },
-    });
+    store.dispatch(action.titleChange(idTask));
   };
   return (
     <>
