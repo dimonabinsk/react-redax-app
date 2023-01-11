@@ -13,15 +13,7 @@ export function taskReducer(state = [], action) {
       };
       return newArray;
     case taskDelete:
-      const newArray1 = [...state];
-      const elementIndex1 = newArray1.findIndex(
-        (element) => element.id === action.payload.id
-      );
-      newArray1[elementIndex1] = {
-        ...newArray1[elementIndex1],
-        ...action.payload,
-      };
-      return newArray1;
+      return state.filter((element) => element.id !== action.payload.id);
     default:
       return state;
   }

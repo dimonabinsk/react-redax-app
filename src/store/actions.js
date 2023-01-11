@@ -22,8 +22,6 @@ export function taskDelete(id) {
     type: actionsType.taskDelete,
     payload: {
       id,
-      completed: false,
-      title: `Task ${id}`,
     },
   };
 }
