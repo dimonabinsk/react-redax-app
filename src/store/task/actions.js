@@ -22,7 +22,6 @@ export function taskDelete(id) {
     type: actionsType.taskDelete,
     payload: {
       id,
-      completed: undefined,
     },
   };
 }

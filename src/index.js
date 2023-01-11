@@ -32,8 +32,8 @@ function App() {
       <ul>
         {state.map(({ id, title, completed }) => (
           <li key={id}>
-            {completed !== undefined && <p>{title}</p>}
-            {completed !== undefined && <p> {`Status: ${completed}`}</p>}
+            <p>{title}</p>
+            <p> {`Status: ${completed}`}</p>
             <button onClick={() => completeTask(id)}>Complete</button>
             <button onClick={() => changeTitle(id)}>Title</button>
             <button onClick={() => deleteTask(id)}>Delete</button>
