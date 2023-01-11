@@ -4,7 +4,6 @@ import "./index.css";
 import * as action from "./store/actions";
 import { initialStore } from "./store/store";
 
-
 const store = initialStore();
 
 function App() {
@@ -34,7 +33,7 @@ function App() {
         {state.map(({ id, title, completed }) => (
           <li key={id}>
             <p>{title}</p>
-            <p> {`Status: ${completed} `}</p>
+            <p> {`Status: ${completed}`}</p>
             <button onClick={() => completeTask(id)}>Complete</button>
             <button onClick={() => changeTitle(id)}>Title</button>
             <button onClick={() => deleteTask(id)}>Delete</button>
