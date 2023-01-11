@@ -1,6 +1,7 @@
 import { taskUpdated, taskDelete } from "./actionTypes";
 
 export function taskReducer(state = [], action) {
+  console.log(state);
   switch (action.type) {
     case taskUpdated:
       const newArray = [...state];

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import * as action from "./store/actions";
-import { initialStore } from "./store/store";
+import * as action from "./store/task/actions";
+import configureStore from "./store/store";
 
-
-const store = initialStore();
+const store = configureStore();
 
 function App() {
   const [state, setState] = useState(store.getState());
@@ -33,8 +32,8 @@ function App() {
       <ul>
         {state.map(({ id, title, completed }) => (
           <li key={id}>
-            <p>{title}</p>
-            <p> {`Status: ${completed} `}</p>
+            {completed !== undefined && <p>{title}</p>}
+            {completed !== undefined && <p> {`Status: ${completed}`}</p>}
             <button onClick={() => completeTask(id)}>Complete</button>
             <button onClick={() => changeTitle(id)}>Title</button>
             <button onClick={() => deleteTask(id)}>Delete</button>
