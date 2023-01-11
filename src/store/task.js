@@ -1,8 +1,11 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createReducer } from "@reduxjs/toolkit";
 
 const updated = createAction("task/updated");
 const remove = createAction("task/removed");
-
+const initialState = [
+  { id: 1, title: "Task 1", completed: false },
+  { id: 2, title: "Task 2", completed: false },
+];
 
 export function taskCompleted(id) {
   return updated({ id, completed: true });
@@ -21,24 +24,20 @@ export function taskDelete(id) {
   });
 }
 
-function taskReducer(state = [], action) {
-  console.log(state);
-  switch (action.type) {
-    case updated.type:
-      const newArray = [...state];
-      const elementIndex = newArray.findIndex(
+const taskReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(updated, (state, action) => {
+      const elementIndex = state.findIndex(
         (element) => element.id === action.payload.id
       );
-      newArray[elementIndex] = {
-        ...newArray[elementIndex],
+      state[elementIndex] = {
+        ...state[elementIndex],
         ...action.payload,
       };
-      return newArray;
-    case remove.type:
+    })
+    .addCase(remove, (state, action) => {
       return state.filter((element) => element.id !== action.payload.id);
-    default:
-      return state;
-  }
-}
+    });
+});
 
 export default taskReducer;
