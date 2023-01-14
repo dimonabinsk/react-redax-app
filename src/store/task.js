@@ -45,7 +45,6 @@ export const getTasks = () => async (dispatch) => {
 };
 
 export const completeTask = (id) => (dispatch, getState) => {
-  console.log(getState);
   dispatch(updated({ id, completed: true }));
 };
 
