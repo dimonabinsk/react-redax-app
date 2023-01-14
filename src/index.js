@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { completeTask, getTasks, taskDelete, titleChange } from "./store/task";
 import createStore from "./store/store";
+import { Provider } from "react-redux";
 
 const store = createStore();
 
@@ -47,6 +48,8 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
