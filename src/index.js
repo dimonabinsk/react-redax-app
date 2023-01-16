@@ -3,23 +3,23 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { completeTask, getTasks, taskDelete, titleChange } from "./store/task";
 import createStore from "./store/store";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
 
 const store = createStore();
 
 function App() {
   const state = useSelector((state) => state);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    store.dispatch(getTasks());
-  }, []);
+    dispatch(getTasks());
+  }, [dispatch]);
 
   const changeTitle = (idTask) => {
-    store.dispatch(titleChange(idTask));
+    dispatch(titleChange(idTask));
   };
 
   const deleteTask = (idTask) => {
-    store.dispatch(taskDelete(idTask));
+    dispatch(taskDelete(idTask));
   };
   return (
     <>
@@ -29,9 +29,7 @@ function App() {
           <li key={id}>
             <p>{title}</p>
             <p> {`Status: ${completed}`}</p>
-            <button onClick={() => store.dispatch(completeTask(id))}>
-              Complete
-            </button>
+            <button onClick={() => dispatch(completeTask(id))}>Complete</button>
             <button onClick={() => changeTitle(id)}>Change Title</button>
             <button onClick={() => deleteTask(id)}>Delete</button>
             <hr />
