@@ -34,23 +34,21 @@ const taskSlice = createSlice({
     },
     taskRequestFailed(state, action) {
       state.isLoading = false;
-}
-
+    },
   },
 });
 
 const { actions, reducer: taskReducer } = taskSlice;
 const { updated, remove, received, taskRequested, taskRequestFailed } = actions;
 
-
-export const getTasks = () => async (dispatch) => {
+export const loadingTasks = () => async (dispatch) => {
   dispatch(taskRequested());
   try {
     const data = await todosService.fetch();
     dispatch(received(data));
   } catch (error) {
     dispatch(taskRequestFailed());
-    dispatch(setError(error.message)); 
+    dispatch(setError(error.message));
   }
 };
 
@@ -72,3 +70,6 @@ export function taskDelete(id) {
 }
 
 export default taskReducer;
+
+export const getTask = () => (state) => state.tasks.entities;
+export const getTaskLoadingStatus = () => (state) => state.tasks.isLoading;

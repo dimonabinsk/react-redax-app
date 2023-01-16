@@ -20,3 +20,5 @@ export const setError = (message) => (dispatch) => {
 };
 
 export default errorReducer;
+
+export const getTaskError = () => (state) => state.errors.entities[0];

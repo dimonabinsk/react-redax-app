@@ -1,15 +1,24 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { completeTask, getTasks, taskDelete, titleChange } from "./store/task";
+import { getTaskError } from "./store/middleware/errors";
+import {
+  completeTask,
+  getTask,
+  getTaskLoadingStatus,
+  loadingTasks,
+  taskDelete,
+  titleChange,
+} from "./store/task";
 
 function App() {
-  const state = useSelector((state) => state.tasks.entities);
-  const isLoading = useSelector((state) => state.tasks.isLoading);
+  const state = useSelector(getTask());
+  const isLoading = useSelector(getTaskLoadingStatus());
+  const error = useSelector(getTaskError());
 
-  const error = useSelector((state) => state.errors.entities[0]);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getTasks());
+    dispatch(loadingTasks());
   }, [dispatch]);
 
   const changeTitle = (idTask) => {
