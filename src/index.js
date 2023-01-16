@@ -8,7 +8,10 @@ import { Provider, useSelector, useDispatch } from "react-redux";
 const store = createStore();
 
 function App() {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.entities);
+  const isLoading = useSelector((state) => state.isLoading);
+
+  const error = useSelector((state) => state.error);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTasks());
@@ -21,6 +24,15 @@ function App() {
   const deleteTask = (idTask) => {
     dispatch(taskDelete(idTask));
   };
+
+  if (isLoading) {
+    return <h3>Loading...</h3>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <>
       <h1 className="App">App</h1>

@@ -1,38 +1,48 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import todosService from "../services/todos.service";
 
-const initialState = [
-  { id: 1, title: "Task 1", completed: false },
-  { id: 2, title: "Task 2", completed: false },
-];
+const initialState = {
+  entities: [],
+  isLoading: true,
+  error: null,
+};
 
 const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
     received(state, action) {
-      return action.payload;
+      state.entities = action.payload;
+      state.isLoading = false;
     },
     updated(state, action) {
-      const elementIndex = state.findIndex(
+      const elementIndex = state.entities.findIndex(
         (element) => element.id === action.payload.id
       );
-      state[elementIndex] = {
-        ...state[elementIndex],
+      state.entities[elementIndex] = {
+        ...state.entities[elementIndex],
         ...action.payload,
       };
     },
     remove(state, action) {
-      return state.filter((element) => element.id !== action.payload.id);
+      state.entities = state.entities.filter(
+        (element) => element.id !== action.payload.id
+      );
     },
+    taskRequested(state) {
+      state.isLoading = true;
+    },
+    taskRequestFailed(state, action) {
+      state.error = action.payload;
+      state.isLoading = false;
+}
+
   },
 });
 
 const { actions, reducer: taskReducer } = taskSlice;
-const { updated, remove, received } = actions;
+const { updated, remove, received, taskRequested, taskRequestFailed } = actions;
 
-const taskRequested = createAction("task/requested");
-const taskRequestFailed = createAction("task/requestFailed");
 
 export const getTasks = () => async (dispatch) => {
   dispatch(taskRequested());
