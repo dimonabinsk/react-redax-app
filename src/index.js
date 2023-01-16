@@ -1,53 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import * as action from "./store/actions";
-import { initialStore } from "./store/store";
 
-const store = initialStore();
+import { Provider } from "react-redux";
 
-function App() {
-  const [state, setState] = useState(store.getState());
+import createStore from "./store/store";
+import App from "./App";
 
-  useEffect(() => {
-    store.subscribe(() => {
-      setState(store.getState());
-    });
-  }, []);
-
-  const completeTask = (idTask) => {
-    store.dispatch(action.taskCompleted(idTask));
-  };
-
-  const changeTitle = (idTask) => {
-    store.dispatch(action.titleChange(idTask));
-  };
-
-  const deleteTask = (idTask) => {
-    store.dispatch(action.taskDelete(idTask));
-  };
-  return (
-    <>
-      <h1 className="App">App</h1>
-      <ul>
-        {state.map(({ id, title, completed }) => (
-          <li key={id}>
-            <p>{title}</p>
-            <p> {`Status: ${completed}`}</p>
-            <button onClick={() => completeTask(id)}>Complete</button>
-            <button onClick={() => changeTitle(id)}>Title</button>
-            <button onClick={() => deleteTask(id)}>Delete</button>
-            <hr />
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
+const store = createStore();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
