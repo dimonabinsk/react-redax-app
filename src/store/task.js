@@ -15,6 +15,10 @@ const taskSlice = createSlice({
       state.entities = action.payload;
       state.isLoading = false;
     },
+    add(state, action) {
+      state.entities.push(action.payload);
+      state.isLoading = false;
+    },
     updated(state, action) {
       const elementIndex = state.entities.findIndex(
         (element) => element.id === action.payload.id
@@ -39,7 +43,8 @@ const taskSlice = createSlice({
 });
 
 const { actions, reducer: taskReducer } = taskSlice;
-const { updated, remove, received, taskRequested, taskRequestFailed } = actions;
+const { updated, remove, received, add, taskRequested, taskRequestFailed } =
+  actions;
 
 export const loadingTasks = () => async (dispatch) => {
   dispatch(taskRequested());
@@ -52,16 +57,27 @@ export const loadingTasks = () => async (dispatch) => {
   }
 };
 
+export const postLoadingTasks = () => async (dispatch) => {
+  dispatch(taskRequested());
+  try {
+    const data = await todosService.post();
+    dispatch(add(data));
+  } catch (error) {
+    dispatch(taskRequestFailed());
+    dispatch(setError(error.message));
+  }
+};
+
 export const completeTask = (id) => (dispatch, getState) => {
   dispatch(updated({ id, completed: true }));
 };
 
-export function titleChange(id) {
+export const titleChange = (id) => {
   return updated({
     id,
     title: `New title ${id}`,
   });
-}
+};
 
 export function taskDelete(id) {
   return remove({

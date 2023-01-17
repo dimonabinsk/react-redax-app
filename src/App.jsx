@@ -6,6 +6,7 @@ import {
   getTask,
   getTaskLoadingStatus,
   loadingTasks,
+  postLoadingTasks,
   taskDelete,
   titleChange,
 } from "./store/task";
@@ -29,6 +30,10 @@ function App() {
     dispatch(taskDelete(idTask));
   };
 
+  const handleAddTodo = () => {
+    dispatch(postLoadingTasks());
+  };
+
   if (isLoading) {
     return <h3>Loading...</h3>;
   }
@@ -40,6 +45,7 @@ function App() {
   return (
     <>
       <h1 className="App">App</h1>
+      <button onClick={() => handleAddTodo()}>Add Todo</button>
       <ul>
         {state.map(({ id, title, completed }) => (
           <li key={id}>
